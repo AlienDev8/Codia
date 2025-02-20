@@ -1,0 +1,141 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+	margin:0;
+	padding:0;
+	background-color: #333333;
+	height: 100vh;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	font-size: 12px;
+}
+iframe {
+	width:100%;
+	/* height: 100%;		 */	
+	border:0;	
+	/* background-color: rgb(125, 54, 54); */
+}
+.c {
+	box-shadow:0 0 0 .2px rgba(255,255,255,.7);
+	/* background-color: #ae2525;	 */
+}
+/* textarea {
+	background-color: #333333;	
+	resize: none;	
+	font-size: 14px;
+	font-family: monospace;		
+	height:98%;
+} */
+
+.ifijo {
+	background-repeat: none;
+	background-size: contain;
+	position:absolute;
+	right:10px;
+	top:10px;
+	opacity: .7;
+	z-index:999;
+}
+.ihtml5 {
+	background-image: url("/ihtml5.svg");	
+	width: 24px;
+	height: 24px;	
+}
+.icss {
+	background-image: url("/icss.svg");	
+	width: 30px;
+	height: 30px;	
+}
+.ijs {
+	background-image: url("/ijs.svg");	
+	width: 30px;
+	height: 30px;	
+}
+
+.gridx {
+    display: grid;
+    /* grid-template-columns: 1fr 10px 1fr; */
+    grid-template-columns: 49.8% 0.4% 49.8%;
+}
+.gutter-col {
+    grid-row: 1/-1;
+    cursor: col-resize;
+	/* background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
+    background-repeat: no-repeat;
+	background-position: center;		 */
+}
+
+.gutter-col-1 {
+    grid-column: 2;
+}
+
+.gutter {
+    background-color: #eee;
+    background-repeat: no-repeat;
+    background-position: 50%;
+}
+
+.gutter.gutter-vertical {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFAQMAAABo7865AAAABlBMVEVHcEzMzMzyAv2sAAAAAXRSTlMAQObYZgAAABBJREFUeF5jOAMEEAIEEFwAn3kMwcB6I2AAAAAASUVORK5CYII=');
+    cursor: row-resize;
+}
+
+.gutter.gutter-vertical {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFAQMAAABo7865AAAABlBMVEVHcEzMzMzyAv2sAAAAAXRSTlMAQObYZgAAABBJREFUeF5jOAMEEAIEEFwAn3kMwcB6I2AAAAAASUVORK5CYII=');
+	background-repeat: no-repeat;
+	background-position: center;
+	/* background-color: rgb(38 38 38 / var(--tw-bg-opacity)); */
+	background-color: #1c1c1c;	
+    cursor: row-resize;
+    height:6px !important;
+}
+
+.custom-select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width:80px;
+    height: auto;
+    font-size: 12px;
+    color:#f1f1f1;
+    padding: 2px 10px 2px 12px;
+    background: #373737 url("/arrows.png") no-repeat right 10px center;
+    background-size: 15px;
+    /* transition: border-color .1s ease-in-out,box-shadow .1s ease-in-out; */
+    border: 0px solid #ddd !important;
+}
+.custom-select:hover {
+    background: #353535 url("/arrows.png") no-repeat right 10px center;
+    background-size: 15px;
+    cursor: pointer;
+}
+.custom-select:focus {
+    border: 1px solid #999;
+    box-shadow: 0 3px 5px 0 rgba(0,0,0,.2);
+    outline: none;
+}
+/* remove default arrow in IE */
+select::-ms-expand {
+    display:none;
+}
+
+.bgoption {
+	background-image: url("/arrows.png");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 15px auto;
+}
+.parent-codicis {
+	/* border:3px solid red; */
+	height:100%;
+}
+.container-codicis {
+	/* border:2px solid yellow; */
+}
+
+/*MONACO EDITOR*/
+
+.monaco-editor {
+	/* padding:20px 0; */
+}

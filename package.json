@@ -1,0 +1,34 @@
+{
+	"name": "codicis",
+	"version": "1.0.0",
+	"type": "commonjs",
+	"main": "./main.js",
+	"module": "./main.js",
+	"private": true,
+	"scripts": {
+		"dev": "vite",
+		"build": "rollup -c -w",
+		"vite-build": "vite build",
+		"preview": "vite preview"
+	},
+	"devDependencies": {
+		"@babel/preset-env": "^7.25.9",
+		"@rollup/plugin-babel": "^6.0.4",
+		"@rollup/plugin-commonjs": "^28.0.1",
+		"@rollup/plugin-json": "^6.1.0",
+		"@rollup/plugin-node-resolve": "^15.3.0",
+		"autoprefixer": "^10.4.20",
+		"postcss": "^8.4.47",
+		"postcss-import": "^16.1.0",
+		"rollup-plugin-postcss": "^4.0.2",
+		"rollup-plugin-replace": "^2.2.0",
+		"split.js": "^1.6.5",
+		"terser": "^5.37.0",
+		"vite": "^5.2.0"
+	},
+	"dependencies": {
+		"monaco-editor": "^0.52.2",
+		"split-grid": "^1.0.11",
+		"tailwindcss": "^3.4.17"
+	}
+}
