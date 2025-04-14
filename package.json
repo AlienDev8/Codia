@@ -1,33 +1,32 @@
 {
 	"name": "codicis",
 	"version": "1.0.0",
-	"type": "commonjs",
+	"type": "module",
 	"main": "./main.js",
 	"module": "./main.js",
 	"private": true,
 	"scripts": {
 		"dev": "vite",
-		"build": "rollup -c -w",
+		"build": "node ./esbuild.config.js",
 		"vite-build": "vite build",
 		"preview": "vite preview"
 	},
 	"devDependencies": {
 		"@babel/preset-env": "^7.25.9",
-		"@rollup/plugin-babel": "^6.0.4",
-		"@rollup/plugin-commonjs": "^28.0.1",
-		"@rollup/plugin-json": "^6.1.0",
-		"@rollup/plugin-node-resolve": "^15.3.0",
 		"autoprefixer": "^10.4.20",
+		"esbuild": "^0.25.0",
+		"monaco-editor": "^0.52.2",
+		"path": "^0.12.7",
 		"postcss": "^8.4.47",
 		"postcss-import": "^16.1.0",
-		"rollup-plugin-postcss": "^4.0.2",
-		"rollup-plugin-replace": "^2.2.0",
+		"sass": "^1.86.3",
 		"split.js": "^1.6.5",
 		"terser": "^5.37.0",
 		"vite": "^5.2.0"
 	},
 	"dependencies": {
-		"monaco-editor": "^0.52.2",
+		"@popperjs/core": "^2.11.8",
+		"bootstrap": "^5.3.5",
 		"split-grid": "^1.0.11",
 		"tailwindcss": "^3.4.17"
 	}
