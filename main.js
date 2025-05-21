@@ -1,7 +1,7 @@
 import {default as split} from 'split.js';
 import Split from 'split-grid';
 // import './style.css';
-// import './node_modules/bootstrap/dist/css/bootstrap.min.css'
+import * as bootstrap from 'bootstrap';
 import './styles.css';
 // import * as bootstrap from 'bootstrap';
 import setupEditor from './editorMonaco';
@@ -32,9 +32,7 @@ let Codicis = {
 		</div>
 	</div>
 	`,
-	codeJS:`
-		
-	`,
+	codeJS:``,
 	codeCSS:`			
 	.container div {			
 		padding:0 16px;
@@ -95,51 +93,49 @@ let Codicis = {
 		if(Codicis.layout === Codicis.CONSTANTES.PANEL || Codicis.layout === undefined){
 			let aSplits = ["#split0_"+Codicis.id, "#split1_"+Codicis.id, "#split2_"+Codicis.id];
 			Codicis.renderPanel();
-			setTimeout(function(){			
-				Split({	
-					minSize:1,			
-					columnGutters: [{
-						track: 1,
-						element: document.querySelector('#gutter-col-1-'+Codicis.id),
-					}],				
-				})
-				split(aSplits,{
-					direction: 'vertical',
-				})	
-				// Codicis.fillCode();
-			},10)			
+			// setTimeout(function(){			
+			// 	Split({	
+			// 		minSize:1,			
+			// 		columnGutters: [{
+			// 			track: 1,
+			// 			element: document.querySelector('#gutter-col-1-'+Codicis.id),
+			// 		}],				
+			// 	})
+			// 	split(aSplits,{
+			// 		direction: 'vertical',
+			// 	})	
+			// },10)			
 		} else { // Codicis.CONSTANTES.TABS
 			Codicis.renderTabs();
 			Codicis.tabs()
-			setTimeout(function(){
-				Split({				
-					columnMinSize:100,				
-					columnGutters: [{
-						track: 1,
-						element: document.querySelector('#gutter-col-1-'+Codicis.id),
-					}],				
-				})
-				// Codicis.fillCode();				
-			},1000)
+			// setTimeout(function(){
+			// 	Split({				
+			// 		columnMinSize:100,				
+			// 		columnGutters: [{
+			// 			track: 1,
+			// 			element: document.querySelector('#gutter-col-1-'+Codicis.id),
+			// 		}],				
+			// 	})
+			// },1000)
 		}		
 		
 	},
 	afterRender: () => {
-		let selectLayoutCbx = document.getElementById("selectLayout_"+Codicis.id);		
-		selectLayoutCbx.value = Codicis.layout;
+		// let selectLayoutCbx = document.getElementById("selectLayout_"+Codicis.id);		
+		// selectLayoutCbx.value = Codicis.layout;
 
-		selectLayoutCbx.addEventListener("change", (e) => {			
-			let c = Codicis.config;
-			selectLayoutCbx.value = e.target.value;
-			// c.config.layout = e.target.value; 
-			c.codeCSS =  Codicis.codeCSS;
-			c.layout = e.target.value; 			
-			Codicis.init(c);					
-			Codicis.updateIframe()	
-			// Codicis.fillCode()
+		// selectLayoutCbx.addEventListener("change", (e) => {			
+		// 	let c = Codicis.config;
+		// 	selectLayoutCbx.value = e.target.value;
+		// 	// c.config.layout = e.target.value; 
+		// 	c.codeCSS =  Codicis.codeCSS;
+		// 	c.layout = e.target.value; 			
+		// 	Codicis.init(c);					
+		// 	Codicis.updateIframe()	
+		// 	// Codicis.fillCode()
 									
 			
-		})			
+		// })			
 		Codicis.updateIframe()
 
 		
@@ -202,56 +198,50 @@ let Codicis = {
 		// Codicis.afterRender()
 	},
 	renderTabs: () => {
-		let template = `			
-			<div id="viz_${Codicis.id}" class="container-codicis d-flex flex-column bg-dark h-100">
-				<!-- Navbar -->
-				<nav class="navbar navbar-expand-lg navbar-dark bg-black flex-grow-0 w-100 py-1">
+		let template = `				
+			<div id="viz_${Codicis.id}" class="container-codicis d-flex flex-column bg-dark">
+				<nav class="navbar navbar-expand-lg navbar-dark bg-black align-items-stretch py-1">
 					<div class="container-fluid px-3">
 						<div class="d-flex justify-content-between w-100">
-						<div class="ms-2">
-						<a class="navbar-brand text-white fs-4" href="#">${Codicis.CONSTANTES.nameApp}</a>
-						</div>
-						<div class="ms-2">
-						<div class="d-flex align-items-baseline">
-							<div class="d-flex px-2">
-								<div class="w-100">
-									<label class="form-label text-white">Layout</label>
-									<select id="selectLayout_${Codicis.id}" class="form-select text-muted">
-										<option value="panel">Panel</option>
-										<option value="tabs">Tabs</option>
-									</select>
+							<div class="ms-2">
+								<a class="navbar-brand text-white fs-4" href="#">${Codicis.CONSTANTES.nameApp}</a>
+							</div>
+							<div class="ms-2">
+								<div class="d-flex align-items-baseline">
+									<div class="d-flex px-2">
+										<div class="w-100">
+											<select id="selectLayout_${Codicis.id}" class="form-select form-select-sm text-muted">
+												<option value   spot="panel">Panel</option>
+												<option value="tabs">Tabs</option>
+											</select>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
-						</div>
-						</div>
 					</div>
 				</nav>
-				<!-- Main Content -->
-				<div class="flex-grow-1 d-flex">
+				<div class="d-flex ">
 					<div class="flex-grow-1 d-flex flex-column">
-						<!-- Tab Buttons -->
-						<div id="tabbutton_${Codicis.id}" class="d-flex bg-dark">
-							<button id="tab1" class="btn btn-dark text-muted py-3 px-4 active border-bottom border-light">
-								HTML
-							</button>
-							<button id="tab2" class="btn btn-dark text-muted py-3 px-4">
-								JS
-							</button>
-							<button id="tab3" class="btn btn-dark text-muted py-3 px-4">
-								CSS
-							</button>
-							</div>
-
-							<!-- Tab Content -->
-							<div id="tabcontainer_${Codicis.id}" class="h-100">
-							<div id="_html_${Codicis.id}_" class="position-relative h-100">
+						<ul id="tabbutton_${Codicis.id}" class="nav nav-tabs" role="tablist">
+							<li class="nav-item">
+								<a id="tab1" class="nav-link active" data-bs-toggle="tab" href="#_html_${Codicis.id}_">HTML</a>
+							</li>
+							<li class="nav-item">
+								<a id="tab2" class="nav-link " data-bs-toggle="tab" href="#_js_${Codicis.id}_">JAVASCRIPT</a>
+							</li>
+							<li class="nav-item">
+								<a id="tab3" class="nav-link " data-bs-toggle="tab" href="#_css_${Codicis.id}_">CSS</a>
+							</li>
+						</ul>
+						<div id="tabcontainer_${Codicis.id}" class="tab-content h-100">
+    							<div id="_html_${Codicis.id}_" class="h-100 position-relative tab-pane active">
 								<i class="ihtml5 position-absolute"></i>
 							</div>
-							<div id="_js_${Codicis.id}_" class="position-relative h-100 d-none">
+							<div id="_js_${Codicis.id}_" class="h-100 position-relative tab-pane ">
 								<i class="ijs position-absolute"></i>
 							</div>
-							<div id="_css_${Codicis.id}_" class="position-relative h-100 d-none">
+							<div id="_css_${Codicis.id}_" class="h-100 position-relative tab-pane ">
 								<i class="icss position-absolute"></i>
 							</div>
 						</div>
@@ -260,7 +250,7 @@ let Codicis = {
 					<div class="gutter-col bg-dark hover-bg-darker" id="gutter-col-1-${Codicis.id}"></div>
 					<!-- Preview Iframe -->
 					<div class="text-dark">
-						<iframe id="_preview_${Codicis.id}_" frameborder="0" class="bg-light h-100 w-100"></iframe>
+						<iframe id="_preview_${Codicis.id}_" frameborder="0" class="bg-light w-100"></iframe>
 					</div>
 				</div>
 			</div>
@@ -270,26 +260,38 @@ let Codicis = {
 
 	},
 	tabs: () => {
-		let aTabs = [...Codicis.get("tabbutton_"+Codicis.id).children];
-		let aContainers = [...Codicis.get("tabcontainer_"+Codicis.id).children];
-		console.log(aContainers)
+		// let aTabs = document.querySelectorAll("#tabbutton_"+Codicis.id+" > div button");
+		// let aContainers = [...Codicis.get("tabcontainer_"+Codicis.id).children];
+		// console.log(aTabs)
 		
-		aTabs.forEach((t, index) => {			
-			t.addEventListener("click" , function(e) {
-				// reset
-				aTabs.forEach(function(t, idx){ 
-					aTabs[idx].classList.remove("active"); 
-					aTabs[idx].classList.remove("border-b-2"); 
-					aTabs[idx].classList.remove("border-blue-500"); 
-					aContainers[idx].classList.add("hidden")
-				})
-				// active tab +  container
-				this.classList.add("active");				
-				this.classList.add("border-b-2");				
-				this.classList.add("border-gray-400");				
-				aContainers[index].classList.remove("hidden")
-			})
-		})	
+
+		// const triggerTabList = document.querySelectorAll('#myTab button')
+		// aTabs.forEach(triggerEl => {
+		// 	const tabTrigger = new bootstrap.Tab(triggerEl)
+
+		// 	triggerEl.addEventListener('click', event => {
+		// 	console.log(tabTrigger)
+		// 		event.preventDefault()
+		// 		tabTrigger.show()
+		// 	})
+		// })
+		// aTabs.forEach((t, index) => {			
+		// 	t.addEventListener("click" , function(e) {
+		// 		// reset
+		// 		console.log(aContainers)
+		// 		aTabs.forEach(function(t, idx){ 
+		// 			aTabs[idx].classList.remove("active"); 
+		// 			aTabs[idx].classList.remove("border-b-2"); 
+		// 			aTabs[idx].classList.remove("border-blue-500"); 
+		// 			aContainers[idx].classList.add("hidden")
+		// 		})
+		// 		// active tab +  container
+		// 		this.classList.add("active");				
+		// 		this.classList.add("border-b-2");				
+		// 		this.classList.add("border-gray-400");				
+		// 		aContainers[index].classList.remove("hidden")
+		// 	})
+		// })	
 
 	},	
 	addEvents: () => {
@@ -298,7 +300,7 @@ let Codicis = {
 		let js = Codicis.editorJS		
 		let css = Codicis.editorCSS
 		
-		html.onDidChangeModelContent((e) => {				
+		html.onDidChangeModelContent((e) => {
 			Codicis.updateIframe()
 		})
 		css.onDidChangeModelContent((e) => {				
@@ -308,7 +310,6 @@ let Codicis = {
 			Codicis.updateIframe()
 		})
 		Codicis.afterRender()	
-		// Codicis.fillCode()
 	},
 	updateIframe:() => {
 		let html = Codicis.editorHTML.getValue()

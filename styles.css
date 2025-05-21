@@ -1,17 +1,25 @@
-@import "/node_modules/bootstrap/dist/css/bootstrap.min.css";
+/* @import "/node_modules/bootstrap/dist/css/bootstrap.min.css"; */
+@import "bootstrap/dist/css/bootstrap.min";
 
+html {	
+	/* background:#262ae8; */
+}
 body {
-	margin:0;
-	padding:0;
+	margin:0 !important;
+	padding:0 !important;
+	border:1px solid #1be480;
 	background-color: #333333;
-	height: 100vh;
+	/* height: 100vh; */
 	font-family: Verdana, Geneva, Tahoma, sans-serif;
 	font-size: 12px;
 }
 iframe {
-	width:100%;
-	/* height: 100%;		 */	
+	/* border:1px solid rgb(27, 228, 128); */
+	/* width:100%; */
+	/* height: 100vh;			 */
 	border:0;	
+	margin:0;
+	padding:0;
 	/* background-color: rgb(125, 54, 54); */
 }
 .c {
@@ -58,9 +66,6 @@ iframe {
 .gutter-col {
     grid-row: 1/-1;
     cursor: col-resize;
-	/* background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
-    background-repeat: no-repeat;
-	background-position: center;		 */
 }
 
 .gutter-col-1 {
@@ -82,7 +87,6 @@ iframe {
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFAQMAAABo7865AAAABlBMVEVHcEzMzMzyAv2sAAAAAXRSTlMAQObYZgAAABBJREFUeF5jOAMEEAIEEFwAn3kMwcB6I2AAAAAASUVORK5CYII=');
 	background-repeat: no-repeat;
 	background-position: center;
-	/* background-color: rgb(38 38 38 / var(--tw-bg-opacity)); */
 	background-color: #1c1c1c;	
     cursor: row-resize;
     height:6px !important;
@@ -99,7 +103,6 @@ iframe {
     padding: 2px 10px 2px 12px;
     background: #373737 url("/arrows.png") no-repeat right 10px center;
     background-size: 15px;
-    /* transition: border-color .1s ease-in-out,box-shadow .1s ease-in-out; */
     border: 0px solid #ddd !important;
 }
 .custom-select:hover {
@@ -123,17 +126,17 @@ select::-ms-expand {
 	background-position: center;
 	background-size: 15px auto;
 }
-.parent-codicis {
-	/* border:3px solid red; */
-	height:100%;
+.parent-codicis {	
+	background:orange;
 }
 .container-codicis {
-	/* border:2px solid yellow; */
+	/* border:1px solid red; */
+	height:100vh;
 }
 
 /*MONACO EDITOR*/
 
 .monaco-editor {
-	/* padding:20px 0; */
+	
 }
 

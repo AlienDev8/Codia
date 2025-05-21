@@ -2,7 +2,7 @@ import esbuild from 'esbuild';
 // import postcss from 'postcss';
 
 let ESBUILD = await esbuild.context({
-	entryPoints: ['main.js','styles.css'],
+	entryPoints: ['main.js','styles_.css'],
 	// outfile: 'dist/EnkiEditor.js',
 	outdir:'./dist/',
 	globalName:"EnkiEditor",

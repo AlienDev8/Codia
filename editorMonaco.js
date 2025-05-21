@@ -7,8 +7,6 @@ export default function setupEditor(container, language, code) {
     console.error(`Container with ID "${container}" not found.`);
     return;
   }
-
-
   // Create the editor instance
 //   console.log("Editor container:")
 //   console.log(container)
@@ -17,15 +15,29 @@ export default function setupEditor(container, language, code) {
 	language: language,						
 	theme:"vs-dark",
 	lineNumbers: "on",
-	readOnly:false,
+	readOnly:false,	
 	automaticLayout: true,
+	placeholder:"//Tu codigo aquí...",
 	// fontFamily:"",
+	scrollBeyondLastLine:false,
 	fontSize:"13px",								
 	minimap:{
 		autohide:true,
 		enabled:false
-	}
+	},
+	tabSize:3,
+	quickSuggestionsDelay:0,
+	wordWrap:"on", // off = with scroll, on = with out scroll 
+	cursorStyle:"line",	
   });
+
+  editor.getModel().updateOptions({ tabSize: 0 })
+//   console.log(editor)
+//   editor.layout();
+	// window.onresize = () => {
+	// 	console.log('Window resize');
+	// 	editor.layout();
+	// };
 
   return editor;
 }
