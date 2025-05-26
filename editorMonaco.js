@@ -32,12 +32,12 @@ export default function setupEditor(container, language, code) {
   });
 
   editor.getModel().updateOptions({ tabSize: 0 })
-//   console.log(editor)
-//   editor.layout();
-	// window.onresize = () => {
-	// 	console.log('Window resize');
-	// 	editor.layout();
-	// };
+
+	window.addEventListener('resize', () => {
+  	// let container = document.querySelector(".parent-codicis")-
+		editor.layout({ height: "100vh" });
+		document.querySelector(".iPreview").height = document.querySelector(".tab-content").clientHeight
+	});
 
   return editor;
 }

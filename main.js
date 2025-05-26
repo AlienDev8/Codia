@@ -44,7 +44,6 @@ let Codicis = {
 		flex-direction:row;
 		justify-content: center;
 		align-items: center;
-		height: 100vh;	
 	}
 	`,
 	editorConfig: {
@@ -76,6 +75,9 @@ let Codicis = {
 		Codicis.selectLayout()	
 		Codicis.loadEditor();			
 		Codicis.addEvents();
+		// const resizeObserver = new ResizeObserver(() => {
+		// 	editor.layout();
+		// });
 			
 	},
 	loadEditor: () => {
@@ -121,21 +123,19 @@ let Codicis = {
 		
 	},
 	afterRender: () => {
-		// let selectLayoutCbx = document.getElementById("selectLayout_"+Codicis.id);		
-		// selectLayoutCbx.value = Codicis.layout;
+		let selectLayoutCbx = document.getElementById("selectLayout_"+Codicis.id);		
+		selectLayoutCbx.value = Codicis.layout;
 
-		// selectLayoutCbx.addEventListener("change", (e) => {			
-		// 	let c = Codicis.config;
-		// 	selectLayoutCbx.value = e.target.value;
-		// 	// c.config.layout = e.target.value; 
-		// 	c.codeCSS =  Codicis.codeCSS;
-		// 	c.layout = e.target.value; 			
-		// 	Codicis.init(c);					
-		// 	Codicis.updateIframe()	
-		// 	// Codicis.fillCode()
-									
-			
-		// })			
+		selectLayoutCbx.addEventListener("change", (e) => {			
+			let c = Codicis.config;
+			selectLayoutCbx.value = e.target.value;
+			// c.config.layout = e.target.value; 
+			c.codeCSS =  Codicis.codeCSS;
+			c.layout = e.target.value; 			
+			Codicis.init(c);					
+			Codicis.updateIframe()	
+			// Codicis.fillCode()		
+		})			
 		Codicis.updateIframe()
 
 		
@@ -189,7 +189,7 @@ let Codicis = {
 					</div>
 					<div class="bg-dark gutter-col" id="gutter-col-1-${Codicis.id}"></div>
 					<div class="text-dark" id="two">
-						<iframe id="_preview_${Codicis.id}_" frameborder="0" class="bg-light h-100 w-100"></iframe>
+						<iframe id="_preview_${Codicis.id}_" frameborder="0" class="iPreview bg-light h-100 w-100"></iframe>
 					</div>
 				</div>
 			</div>	
@@ -221,7 +221,7 @@ let Codicis = {
 						</div>
 					</div>
 				</nav>
-				<div class="d-flex ">
+				<div class="d-flex h-100">
 					<div class="flex-grow-1 d-flex flex-column">
 						<ul id="tabbutton_${Codicis.id}" class="nav nav-tabs" role="tablist">
 							<li class="nav-item">
@@ -250,7 +250,7 @@ let Codicis = {
 					<div class="gutter-col bg-dark hover-bg-darker" id="gutter-col-1-${Codicis.id}"></div>
 					<!-- Preview Iframe -->
 					<div class="text-dark">
-						<iframe id="_preview_${Codicis.id}_" frameborder="0" class="bg-light w-100"></iframe>
+						<iframe id="_preview_${Codicis.id}_" frameborder="0" class="iPreview bg-light w-100"></iframe>
 					</div>
 				</div>
 			</div>
@@ -330,7 +330,7 @@ let Codicis = {
 						${css}						
 					</style>
 				</head>
-				<body>
+				<body class="">
 					${html}
 					<script>
 						${js}
@@ -342,6 +342,7 @@ let Codicis = {
 		// console.log("Codicis.elePreview")
 		// console.log(Codicis.elePreview)
 		// Codicis.elePreview.contentDocument.style.height = "100%";
+		document.querySelector(".iPreview").height = document.querySelector(".tab-content").clientHeight
 	}
 
 }
