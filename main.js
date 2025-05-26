@@ -134,6 +134,7 @@ let Codicis = {
 			c.layout = e.target.value; 			
 			Codicis.init(c);					
 			Codicis.updateIframe()	
+			console.log(c.layout)
 			// Codicis.fillCode()		
 		})			
 		Codicis.updateIframe()
@@ -211,7 +212,7 @@ let Codicis = {
 									<div class="d-flex px-2">
 										<div class="w-100">
 											<select id="selectLayout_${Codicis.id}" class="form-select form-select-sm text-muted">
-												<option value   spot="panel">Panel</option>
+												<option value="panel">Panel</option>
 												<option value="tabs">Tabs</option>
 											</select>
 										</div>
