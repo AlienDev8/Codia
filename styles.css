@@ -34,17 +34,17 @@ iframe {
 }
 .ihtml5 {
 	background-image: url("/ihtml5.svg");	
-	width: 24px;
-	height: 24px;	
+	width: 32px;
+	height: 32px;	
 	z-index: 99999;
-	right: 15px;
-	top: 10px;
+	right: 18px;
+	top: 12px;
 	background-size: cover;
 }
 .icss {
 	background-image: url("/icss.svg");	
-	width: 30px;
-	height: 30px;	
+	width: 38px;
+	height: 38px;	
 	z-index: 99999;
 	right: 15px;
 	top: 10px;
@@ -52,8 +52,8 @@ iframe {
 }
 .ijs {
 	background-image: url("/ijs.svg");	
-	width: 30px;
-	height: 30px;	
+	width: 38px;
+	height: 38px;	
 	z-index: 99999;
 	right: 15px;
 	top: 10px;
@@ -65,8 +65,8 @@ iframe {
 */
 .gridx {
     display: grid;
-    /* grid-template-columns: 1fr 10px 1fr; */
-    grid-template-columns: 49.8% 0.4% 49.8%;
+    grid-template-columns: 1fr 10px 1fr;
+    /* grid-template-columns: 49.8% 0.4% 49.8%; */
 }
 .gutter-col {
     grid-row: 1/-1;

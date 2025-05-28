@@ -95,18 +95,20 @@ let Codicis = {
 		if(Codicis.layout === Codicis.CONSTANTES.PANEL || Codicis.layout === undefined){
 			let aSplits = ["#split0_"+Codicis.id, "#split1_"+Codicis.id, "#split2_"+Codicis.id];
 			Codicis.renderPanel();
-			// setTimeout(function(){			
-			// 	Split({	
-			// 		minSize:1,			
-			// 		columnGutters: [{
-			// 			track: 1,
-			// 			element: document.querySelector('#gutter-col-1-'+Codicis.id),
-			// 		}],				
-			// 	})
-			// 	split(aSplits,{
-			// 		direction: 'vertical',
-			// 	})	
-			// },10)			
+			setTimeout(function(){	
+				console.log(document.querySelector('#gutter-col-1-'+Codicis.id))		
+				Split({	
+					minSize:1,			
+					columnGutters: [{
+						track: 1,
+						// element: document.querySelector('#gutter-col-1-'+Codicis.id),
+						element: document.querySelector('#gutter-col-1-'+Codicis.id),
+					}],				
+				})
+				split(aSplits,{
+					direction: 'vertical',
+				})	
+			},500)			
 		} else { // Codicis.CONSTANTES.TABS
 			Codicis.renderTabs();
 			Codicis.tabs()
@@ -151,45 +153,45 @@ let Codicis = {
 	},	
 	renderPanel: () => {
 		let template = `			
-			<div id="viz_${Codicis.id}" class="container-codicis d-flex flex-column bg-dark h-100">				
-				<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-					<div class="container-fluid">
-						<!-- Brand/Logo -->
-						<a class="navbar-brand" href="#">${Codicis.CONSTANTES.nameApp}</a>
-
-						<!-- Layout Selector -->
-						<div class="ms-2">
-							<div class="d-flex align-items-baseline">
-								<div class="d-flex px-2">
-									<div class="w-100">
-										<label class="form-label">Layout</label>
-										<select id="selectLayout_${Codicis.id}" class="form-select text-muted">
-											<option value="panel">Panel</option>
-											<option value="tabs">Tabs</option>
-										</select>
+			<div id="viz_${Codicis.id}" class="container-codicis d-flex flex-column bg-dark">
+				<nav class="navbar navbar-expand-lg navbar-dark bg-black align-items-stretch py-1">
+					<div class="container-fluid px-3">
+						<div class="d-flex justify-content-between w-100">
+							<div class="ms-2">
+								<a class="navbar-brand text-white fs-4" href="#">${Codicis.CONSTANTES.nameApp}</a>
+							</div>
+							<div class="ms-2">
+								<div class="d-flex align-items-baseline">
+									<div class="d-flex px-2">
+										<div class="w-100">
+											<select id="selectLayout_${Codicis.id}" class="form-select form-select-sm text-muted">
+												<option value="panel">Panel</option>
+												<option value="tabs">Tabs</option>
+											</select>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</nav>
-				<div class="d-flex flex-grow-1 flex-shrink-0 flex-column">
-					<div id="one">
-						<div id="split0_${Codicis.id}" class="position-relative flex-grow-1">
+				<div class="d-flex flex-row h-100">
+					<div id="one" class="col d-flex flex-column ">
+						<div id="split0_${Codicis.id}" class="c position-relative align-content-stretch flex-grow-1 w-100">
 							<div id="_html_${Codicis.id}_" class="w-100 h-100"></div>
 							<i class="ihtml5 position-absolute"></i>
 						</div>
-						<div id="split1_${Codicis.id}" class="position-relative flex-grow-1 w-100">
+						<div id="split1_${Codicis.id}" class="c position-relative align-content-stretch flex-grow-1 w-100">
 							<div id="_js_${Codicis.id}_" class="w-100 h-100"></div>
 							<i class="ijs position-absolute"></i>
 						</div>
-						<div id="split2_${Codicis.id}" class="position-relative flex-grow-1">
+						<div id="split2_${Codicis.id}" class="c position-relative align-content-stretch flex-grow-1 w-100">
 							<div id="_css_${Codicis.id}_" class="w-100 h-100"></div>
 							<i class="icss position-absolute"></i>
 						</div>
 					</div>
 					<div class="bg-dark gutter-col" id="gutter-col-1-${Codicis.id}"></div>
-					<div class="text-dark" id="two">
+					<div class="text-dark col" id="two">
 						<iframe id="_preview_${Codicis.id}_" frameborder="0" class="iPreview bg-light h-100 w-100"></iframe>
 					</div>
 				</div>
@@ -342,8 +344,7 @@ let Codicis = {
 		Codicis.elePreview.setAttribute("srcdoc", template)					
 		// console.log("Codicis.elePreview")
 		// console.log(Codicis.elePreview)
-		// Codicis.elePreview.contentDocument.style.height = "100%";
-		document.querySelector(".iPreview").height = document.querySelector(".tab-content").clientHeight
+		// document.querySelector(".iPreview").height = document.querySelector(".tab-content").clientHeight
 	}
 
 }
