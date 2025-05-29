@@ -96,13 +96,12 @@ let Codicis = {
 			let aSplits = ["#split0_"+Codicis.id, "#split1_"+Codicis.id, "#split2_"+Codicis.id];
 			Codicis.renderPanel();
 			setTimeout(function(){	
-				console.log(document.querySelector('#gutter-col-1-'+Codicis.id))		
 				Split({	
 					minSize:1,			
 					columnGutters: [{
 						track: 1,
+						element: document.querySelector('.gutter-col-1'),
 						// element: document.querySelector('#gutter-col-1-'+Codicis.id),
-						element: document.querySelector('#gutter-col-1-'+Codicis.id),
 					}],				
 				})
 				split(aSplits,{
@@ -175,7 +174,7 @@ let Codicis = {
 						</div>
 					</div>
 				</nav>
-				<div class="d-flex flex-row h-100">
+				<div class="d-flex flex-row h-100 grid">
 					<div id="one" class="col d-flex flex-column ">
 						<div id="split0_${Codicis.id}" class="c position-relative align-content-stretch flex-grow-1 w-100">
 							<div id="_html_${Codicis.id}_" class="w-100 h-100"></div>
@@ -190,7 +189,7 @@ let Codicis = {
 							<i class="icss position-absolute"></i>
 						</div>
 					</div>
-					<div class="bg-dark gutter-col" id="gutter-col-1-${Codicis.id}"></div>
+					<div class="gutter-col gutter-col-1 border border-4" id="gutter-col-1-${Codicis.id}"></div>
 					<div class="text-dark col" id="two">
 						<iframe id="_preview_${Codicis.id}_" frameborder="0" class="iPreview bg-light h-100 w-100"></iframe>
 					</div>

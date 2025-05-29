@@ -36,7 +36,7 @@ export default function setupEditor(container, language, code) {
 	window.addEventListener('resize', () => {
   	// let container = document.querySelector(".parent-codicis")-
 		editor.layout({ height: "100vh" });
-		document.querySelector(".iPreview").height = document.querySelector(".tab-content").clientHeight
+		// document.querySelector(".iPreview").height = document.querySelector(".tab-content").clientHeight
 	});
 
   return editor;
