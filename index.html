@@ -33,7 +33,8 @@
 		// import Codicis from '/dist/Codicis.js'
 		// import App from './dist/main.js'
 		window.onload = function(){	
-			let APP = Editor({
+			let APP = Editor();
+			APP.init({
 				render:"app",
 				layout:"tabs",
 				codeHTML:`
@@ -45,9 +46,10 @@
 				`							
 			})
 
-			let APP2 = Editor({
+			let APP2 = Editor();
+			APP2.init({
 				render:"app2",
-				layout:"tabs",
+				layout:"panel",
 				codeHTML:`
 				<div class="container">
 					<div class="bg-dark text-white">

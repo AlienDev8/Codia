@@ -4,9 +4,8 @@ import './styles.css';
 import * as bootstrap from 'bootstrap';
 import setupEditor from './editorMonaco';
 
-let Editor = (props) => {
-
-	return Codicis.init(props);
+let Editor = () => {	
+	return Codicis;
 }
 let Codicis = {
 	id:null,
