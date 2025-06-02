@@ -13,7 +13,9 @@
 	},
 	"devDependencies": {
 		"@babel/preset-env": "^7.25.9",
+		"@popperjs/core": "^2.11.8",
 		"autoprefixer": "^10.4.20",
+		"bootstrap": "^5.3.6",
 		"esbuild": "^0.25.0",
 		"monaco-editor": "^0.52.2",
 		"path": "^0.12.7",
@@ -23,11 +25,5 @@
 		"split.js": "^1.6.5",
 		"terser": "^5.37.0",
 		"vite": "^5.2.0"
-	},
-	"dependencies": {
-		"@popperjs/core": "^2.11.8",
-		"bootstrap": "^5.3.5",
-		"split-grid": "^1.0.11",
-		"tailwindcss": "^3.4.17"
 	}
 }

@@ -1,17 +1,13 @@
 import {default as split} from 'split.js';
-import Split from 'split-grid';
-// import './style.css';
-import * as bootstrap from 'bootstrap';
+// import Split from 'split-grid';
 import './styles.css';
-// import * as bootstrap from 'bootstrap';
+import * as bootstrap from 'bootstrap';
 import setupEditor from './editorMonaco';
 
-// const CONSTANTES = {
-// 	PANEL:"panel",
-// 	TABS:"tabs",
-// 	nameApp:"Codicis",
-	
-// };
+let Editor = (props) => {
+
+	return Codicis.init(props);
+}
 let Codicis = {
 	id:null,
 	eleRender:null,
@@ -23,7 +19,7 @@ let Codicis = {
 	CONSTANTES:{
 		PANEL:"panel",
 		TABS:"tabs",
-		nameApp:"Enki Editor",	
+		nameApp:"CodeZen DevLive Codia ",	
 	},
 	codeHTML:`
 	<div class="container">
@@ -45,24 +41,20 @@ let Codicis = {
 		justify-content: center;
 		align-items: center;
 	}
-	`,
-	editorConfig: {
-		theme: 'vs-dark',
-		minimap: { enabled: false },
-		automaticLayout: true,
-		fontSize: 14,
-		tabSize: 2,
-		scrollBeyondLastLine: false,
-		wordWrap: 'on',
-		padding: { top: 10 },
-		lineNumbers: 'on',
-	},
+	`,	
 	elePreview:null,
 	eleHTML:null,
 	eleCSS:null,
 	eleJS:null,
 	EDITOR:null,
 	get: id => {return document.querySelector("#"+id)},
+	constructor:() => {
+		if (Codicis.instance) {
+			return Singleton.instance;
+		}
+		Codicis.instance = this;
+	
+	},
 	init: (oConfig) => {
 		Codicis.config = oConfig;
 		Codicis.id = oConfig.render
@@ -74,10 +66,7 @@ let Codicis = {
 		if(oConfig.codeCSS !== undefined) { Codicis.codeCSS = oConfig.codeCSS; }
 		Codicis.selectLayout()	
 		Codicis.loadEditor();			
-		Codicis.addEvents();
-		// const resizeObserver = new ResizeObserver(() => {
-		// 	editor.layout();
-		// });
+		Codicis.addEvents();		
 			
 	},
 	loadEditor: () => {
@@ -92,34 +81,24 @@ let Codicis = {
 		
 	},	
 	selectLayout: () => {
+		let aSplitsHorizontal = ["#one_"+Codicis.id, "#two_"+Codicis.id];
 		if(Codicis.layout === Codicis.CONSTANTES.PANEL || Codicis.layout === undefined){
 			let aSplits = ["#split0_"+Codicis.id, "#split1_"+Codicis.id, "#split2_"+Codicis.id];
 			Codicis.renderPanel();
-			setTimeout(function(){	
-				Split({	
-					minSize:1,			
-					columnGutters: [{
-						track: 1,
-						element: document.querySelector('.gutter-col-1'),
-						// element: document.querySelector('#gutter-col-1-'+Codicis.id),
-					}],				
-				})
+			setTimeout(function(){					
 				split(aSplits,{
 					direction: 'vertical',
+				})
+				split(aSplitsHorizontal,{
+					direction: 'horizontal',
 				})	
 			},500)			
 		} else { // Codicis.CONSTANTES.TABS
 			Codicis.renderTabs();
 			Codicis.tabs()
-			// setTimeout(function(){
-			// 	Split({				
-			// 		columnMinSize:100,				
-			// 		columnGutters: [{
-			// 			track: 1,
-			// 			element: document.querySelector('#gutter-col-1-'+Codicis.id),
-			// 		}],				
-			// 	})
-			// },1000)
+			split(aSplitsHorizontal,{
+				direction: 'horizontal',
+			})	
 		}		
 		
 	},
@@ -129,14 +108,13 @@ let Codicis = {
 
 		selectLayoutCbx.addEventListener("change", (e) => {			
 			let c = Codicis.config;
+			console.log(c)
 			selectLayoutCbx.value = e.target.value;
-			// c.config.layout = e.target.value; 
 			c.codeCSS =  Codicis.codeCSS;
 			c.layout = e.target.value; 			
 			Codicis.init(c);					
 			Codicis.updateIframe()	
 			console.log(c.layout)
-			// Codicis.fillCode()		
 		})			
 		Codicis.updateIframe()
 
@@ -145,10 +123,7 @@ let Codicis = {
 	settings: () => {
 		return `			
 			
-		`;
-		return `
-
-		`; 
+		`;		
 	},	
 	renderPanel: () => {
 		let template = `			
@@ -175,7 +150,7 @@ let Codicis = {
 					</div>
 				</nav>
 				<div class="d-flex flex-row h-100 grid">
-					<div id="one" class="col d-flex flex-column ">
+					<div id="one_${Codicis.id}" class="d-flex flex-column ">
 						<div id="split0_${Codicis.id}" class="c position-relative align-content-stretch flex-grow-1 w-100">
 							<div id="_html_${Codicis.id}_" class="w-100 h-100"></div>
 							<i class="ihtml5 position-absolute"></i>
@@ -189,8 +164,8 @@ let Codicis = {
 							<i class="icss position-absolute"></i>
 						</div>
 					</div>
-					<div class="gutter-col gutter-col-1 border border-4" id="gutter-col-1-${Codicis.id}"></div>
-					<div class="text-dark col" id="two">
+					<!-- div class="gutter-col gutter-col-1 " id="gutter-col-1-${Codicis.id}"></ !-->
+					<div class="text-dark " id="two_${Codicis.id}">
 						<iframe id="_preview_${Codicis.id}_" frameborder="0" class="iPreview bg-light h-100 w-100"></iframe>
 					</div>
 				</div>
@@ -223,8 +198,8 @@ let Codicis = {
 						</div>
 					</div>
 				</nav>
-				<div class="d-flex h-100">
-					<div class="flex-grow-1 d-flex flex-column">
+				<div class="d-flex h-100 grid">
+					<div id="one_${Codicis.id}" class="flex-grow-1 d-flex flex-column">
 						<ul id="tabbutton_${Codicis.id}" class="nav nav-tabs" role="tablist">
 							<li class="nav-item">
 								<a id="tab1" class="nav-link active" data-bs-toggle="tab" href="#_html_${Codicis.id}_">HTML</a>
@@ -248,10 +223,8 @@ let Codicis = {
 							</div>
 						</div>
 					</div>
-					<!-- Gutter Column -->
-					<div class="gutter-col bg-dark hover-bg-darker" id="gutter-col-1-${Codicis.id}"></div>
 					<!-- Preview Iframe -->
-					<div class="text-dark">
+					<div class="text-dark" id="two_${Codicis.id}">
 						<iframe id="_preview_${Codicis.id}_" frameborder="0" class="iPreview bg-light w-100"></iframe>
 					</div>
 				</div>
@@ -348,12 +321,14 @@ let Codicis = {
 
 }
 
-const App = (props) => {
-	// const {render, layout} = props;
-	let AppInstancia = Object.assign({},Codicis)	
-	return AppInstancia.init(props)
-}
+// let App = (props) => {
+// 	// const {render, layout} = props;
+// 	// let AppInstancia = Object.assign({},Codicis)	
+// 	let AppInstancia = Codicis.getInstance();	
+// 	let Instancia = AppInstancia.init(props)
+// 	return Instancia
+// }
 
-export default App;
+export default Editor;
 // export { Codicis }; 
 

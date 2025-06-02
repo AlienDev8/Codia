@@ -17,9 +17,9 @@ export default function setupEditor(container, language, code) {
 	lineNumbers: "on",
 	readOnly:false,	
 	automaticLayout: true,
-	placeholder:"//Tu codigo aquí...",
+	placeholder:"//Tu código aquí...",
 	// fontFamily:"",
-	scrollBeyondLastLine:false,
+	scrollBeyondLastLine:false,	
 	fontSize:"13px",								
 	minimap:{
 		autohide:true,

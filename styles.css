@@ -64,8 +64,9 @@ iframe {
 	Grid layout draggable columns
 */
 .grid {
-    display: grid;
-    grid-template-columns: 1fr 10px 1fr;
+    display: flex;
+    flex-direction: row;
+    /* grid-template-columns: 1fr 10px 1fr; */
     /* grid-template-columns: 49.8% 0.4% 49.8%; */
 }
 .gutter-col {
@@ -78,9 +79,13 @@ iframe {
 }
 
 .gutter {
-    background-color: #eee;
+    	background-color: #010101;	
     background-repeat: no-repeat;
     background-position: 50%;
+}
+.gutter.gutter-horizontal {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
+    cursor: col-resize;
 }
 
 .gutter.gutter-vertical {
@@ -92,9 +97,9 @@ iframe {
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFAQMAAABo7865AAAABlBMVEVHcEzMzMzyAv2sAAAAAXRSTlMAQObYZgAAABBJREFUeF5jOAMEEAIEEFwAn3kMwcB6I2AAAAAASUVORK5CYII=');
 	background-repeat: no-repeat;
 	background-position: center;
-	background-color: #1c1c1c;	
-    cursor: row-resize;
-    height:6px !important;
+	background-color: #010101;	
+    	cursor: row-resize;
+    	/* height:10px !important; */
 }
 /**
 	End Grid layout draggable columns
@@ -165,4 +170,8 @@ select::-ms-expand {
 .nav-tabs .nav-link:hover {	    
     border-color: transparent;	
     color:#93b7ff;
+}
+.form-select-sm {
+	padding-top:0px;
+	padding-bottom:0px;
 }
