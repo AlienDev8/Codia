@@ -4,7 +4,10 @@ import './styles.css';
 import * as bootstrap from 'bootstrap';
 import setupEditor from './editorMonaco';
 
-const Codium = () =>({		
+let Editor = () => {	
+	return Codicis;
+}
+let Codicis = {
 	id:null,
 	eleRender:null,
 	layout:"panel",// panel | tabs
@@ -43,7 +46,14 @@ const Codium = () =>({
 	eleCSS:null,
 	eleJS:null,
 	EDITOR:null,
-	get: id => {return document.querySelector("#"+id)},	
+	get: id => {return document.querySelector("#"+id)},
+	constructor:() => {
+		if (Codicis.instance) {
+			return Singleton.instance;
+		}
+		Codicis.instance = this;
+	
+	},
 	init: (oConfig) => {
 		Codicis.config = oConfig;
 		Codicis.id = oConfig.render
@@ -308,7 +318,7 @@ const Codium = () =>({
 		// document.querySelector(".iPreview").height = document.querySelector(".tab-content").clientHeight
 	}
 
-});
+}
 
 // let App = (props) => {
 // 	// const {render, layout} = props;
@@ -318,6 +328,6 @@ const Codium = () =>({
 // 	return Instancia
 // }
 
-export default Codium;
+export default Editor;
 // export { Codicis }; 
 

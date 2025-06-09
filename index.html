@@ -29,11 +29,12 @@
 
     <!-- <script type="module" src="./main.js"></script>  -->
     <script type="module">		
-		 import Editor from './main.js'
+		 import Codium from './main.js'
 		// import Codicis from '/dist/Codicis.js'
 		// import App from './dist/main.js'
 		window.onload = function(){	
-			let APP = Editor();
+			let APP =  new Codium();
+			// console.log(APP)
 			APP.init({
 				render:"app",
 				layout:"tabs",
@@ -46,18 +47,18 @@
 				`							
 			})
 
-			let APP2 = Editor();
-			APP2.init({
-				render:"app2",
-				layout:"panel",
-				codeHTML:`
-				<div class="container">
-					<div class="bg-dark text-white">
-						<h3>Coder Enki Editor.....</h3>				
-					</div>
-				</div>
-				`							
-			})
+			// let APP2 = new Codium();
+			// APP2.init({
+			// 	render:"app2",
+			// 	layout:"panel",
+			// 	codeHTML:`
+			// 	<div class="container">
+			// 		<div class="bg-dark text-white">
+			// 			<h3>Coder Enki Editor.....</h3>				
+			// 		</div>
+			// 	</div>
+			// 	`							
+			// })
 			
 	}	
     </script>
