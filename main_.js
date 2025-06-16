@@ -4,9 +4,6 @@ import './styles.css';
 import * as bootstrap from 'bootstrap';
 import setupEditor from './editorMonaco';
 
-let Editor = () => {	
-	return Codicis;
-}
 let Codicis = {
 	id:null,
 	eleRender:null,
@@ -18,7 +15,7 @@ let Codicis = {
 	CONSTANTES:{
 		PANEL:"panel",
 		TABS:"tabs",
-		nameApp:"CodeZen DevLive Codia ",	
+		nameApp:"Codia v1.0 ",	
 	},
 	codeHTML:`
 	<div class="container">
@@ -79,11 +76,12 @@ let Codicis = {
 		Codicis.editorCSS = setupEditor(Codicis.eleCSS, 'css', Codicis.codeCSS);
 		
 	},	
+	iSplit:null,
 	selectLayout: () => {
 		let aSplitsHorizontal = ["#one_"+Codicis.id, "#two_"+Codicis.id];
 		if(Codicis.layout === Codicis.CONSTANTES.PANEL || Codicis.layout === undefined){
 			let aSplits = ["#split0_"+Codicis.id, "#split1_"+Codicis.id, "#split2_"+Codicis.id];
-			Codicis.renderPanel();
+			Codicis.iSplit = Codicis.renderPanel();
 			setTimeout(function(){					
 				split(aSplits,{
 					direction: 'vertical',
@@ -95,7 +93,7 @@ let Codicis = {
 		} else { // Codicis.CONSTANTES.TABS
 			Codicis.renderTabs();
 			Codicis.tabs()
-			split(aSplitsHorizontal,{
+			Codicis.iSplit = split(aSplitsHorizontal,{
 				direction: 'horizontal',
 			})	
 		}		
@@ -328,6 +326,6 @@ let Codicis = {
 // 	return Instancia
 // }
 
-export default Editor;
-// export { Codicis }; 
+//export default Editor;
+export default Codicis; 
 

@@ -1,5 +1,6 @@
 /* @import "/node_modules/bootstrap/dist/css/bootstrap.min.css"; */
-@import "bootstrap/dist/css/bootstrap.min";
+@import "~bootstrap/dist/css/bootstrap.min.css";
+
 
 html {	
 	/* background:#262ae8; */

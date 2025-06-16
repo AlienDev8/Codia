@@ -1,4 +1,4 @@
-import "./monaco-workers";
+import Workers from "./monaco-workers";
 import * as monaco from 'monaco-editor';
 
 export default function setupEditor(container, language, code) {
@@ -7,6 +7,8 @@ export default function setupEditor(container, language, code) {
     console.error(`Container with ID "${container}" not found.`);
     return;
   }
+
+    self.MonacoEnvironment = Workers;
   // Create the editor instance
 //   console.log("Editor container:")
 //   console.log(container)
@@ -19,6 +21,7 @@ export default function setupEditor(container, language, code) {
 	automaticLayout: true,
 	placeholder:"//Tu código aquí...",
 	// fontFamily:"",
+	platform:"",
 	scrollBeyondLastLine:false,	
 	fontSize:"13px",								
 	minimap:{
