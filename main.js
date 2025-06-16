@@ -1,7 +1,8 @@
 import Split from "split.js";
-// import Split from 'split-grid';
-import './styles.css';
+// import "bootstrap";
 import * as bootstrap from "bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+import './styles.css';
 import setupEditor from './editorMonaco';
 
 const Editor = function(oConfig){
