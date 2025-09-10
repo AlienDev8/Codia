@@ -1,23 +1,24 @@
 import Split from "split.js";
+// import "bootstrap";
 import * as bootstrap from "bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 import './styles.css';
-import setupEditor from './editorMonaco';
-/**
- * Codia: funcion principal generadora de la instancia de un editor para HTML, JS y CSS
- * @param {*} oConfig 
- */
-const Codia = function(oConfig){
+// import instanciaEditor from './editorMonaco';
+import instanciaEditor from './editorMonaco';
+
+const Editor = function(oConfig){
+	// this.id = null;
+	// this.eleRender = null;
+	// this.layout = "panel";// panel | tabs
+	// this.config = {};
 	this.iSplit = null;
-	this.vActive = "html"; // html, css, js
-	this.activo = null;
 	this.editorHTML = null;
 	this.editorJS = null;
 	this.editorCSS = null;
-	this.logo = "./Codia_logo.svg";
 	this.CONSTANTES = {
 		PANEL:"panel",
 		TABS:"tabs",
-		nameApp:"Codia"	
+		nameApp:"Codia v1.0 "	
 	};
 	this.codeHTML = `
 	<div class="container">
@@ -48,53 +49,37 @@ const Codia = function(oConfig){
 
 	this.updateProps(oConfig)
 }
-Codia.prototype.updateProps = function(props){
+Editor.prototype.updateProps = function(props){
 	this.config = props;
 	this.id = props.render
 	this.layout = props.layout;
-	this.vActive = props.activo !== null ? props.activo.trim() : this.vActive;
 	this.eleRender = document.getElementById(props.render);	
 	this.eleRender.classList.add("parent-codicis")
 	if(props.codeHTML !== undefined) { this.codeHTML = props.codeHTML; }	
 	if(props.codeJS !== undefined) { this.codeJS = props.codeJS; }		
 	if(props.codeCSS !== undefined) { this.codeCSS = props.codeCSS; }
 }
-Codia.prototype.get = function(id){
+Editor.prototype.get = function(id){
 	return document.querySelector("#"+id)
 }
-/**
- * Inicializa el componente con los parárametros de entrada
- */
-Codia.prototype.init  = function(){
+Editor.prototype.init  = function(){
 	this.selectLayout()	
 	this.loadEditor();			
 	this.addEvents();		
 }
-/**
- * Genera una instancia para cada sección: HTML, JS, CSS y los carga
- */
-Codia.prototype.loadEditor =  function(){
+Editor.prototype.loadEditor =  function(){
 	this.elePreview = this.get("_preview_"+this.id+"_")
 	this.eleHTML = this.get("_html_"+this.id+"_")
 	this.eleCSS = this.get("_css_"+this.id+"_")
 	this.eleJS = this.get("_js_"+this.id+"_")
 	// editor monaco HTML
-	this.editorHTML = setupEditor(this.eleHTML, 'html', this.codeHTML)		
-	this.editorJS = setupEditor(this.eleJS, 'javascript', this.codeJS);
-	this.editorCSS = setupEditor(this.eleCSS, 'css', this.codeCSS);		
+	this.editorHTML = instanciaEditor(this.eleHTML, 'html', this.codeHTML)	
+	this.editorJS = instanciaEditor(this.eleJS, 'javascript', this.codeJS);
+	this.editorCSS = instanciaEditor(this.eleCSS, 'css', this.codeCSS);		
 }	
-/**
- * Selecciona el modo visual que se renderizara: tabs o paneles verticales
- */
-Codia.prototype.selectLayout =  function(){
+Editor.prototype.selectLayout =  function(){
 	let aSplitsHorizontal = ["#one_"+this.id, "#two_"+this.id];
-	if(this.layout === this.CONSTANTES.TABS || this.layout === undefined){
-		this.renderTabs();
-		// this.tabs()
-		this.iSplit = Split(aSplitsHorizontal,{
-			direction: 'horizontal',
-		})	
-	} else { // this.CONSTANTES.PANEL		
+	if(this.layout === this.CONSTANTES.PANEL || this.layout === undefined){
 		let aSplits = ["#split0_"+this.id, "#split1_"+this.id, "#split2_"+this.id];
 		this.iSplit = this.renderPanel();
 		setTimeout(function(){					
@@ -105,41 +90,51 @@ Codia.prototype.selectLayout =  function(){
 				direction: 'horizontal',
 			})	
 		},500)			
+	} else { // this.CONSTANTES.TABS
+		this.renderTabs();
+		this.tabs()
+		this.iSplit = Split(aSplitsHorizontal,{
+			direction: 'horizontal',
+		})	
 	}		
 }
-/**
- * Despues de cargado el componente ejecuta esta funcion para poder actualizar el iframe con el contenido que pueda tener de inicio
- */
-Codia.prototype.afterRender = function(){ // funcion comentada por el momento
+Editor.prototype.afterRender = function(){
 	let _this = this;
-	// let selectLayoutCbx = document.getElementById("selectLayout_"+_this.id);		
-	// selectLayoutCbx.value = _this.layout;
+	let selectLayoutCbx = document.getElementById("selectLayout_"+_this.id);		
+	selectLayoutCbx.value = _this.layout;
 
-	// selectLayoutCbx.addEventListener("change", (e) => {			
-	// 	let c = _this.config;
-	// 	selectLayoutCbx.value = e.target.value;
-	// 	c.codeCSS =  _this.codeCSS;
-	// 	c.layout = e.target.value; 	
-	// 	_this.updateProps(c)		
-	// 	_this.init();					
-	// 	_this.updateIframe()	
-	// })			
+	selectLayoutCbx.addEventListener("change", (e) => {			
+		let c = _this.config;
+		selectLayoutCbx.value = e.target.value;
+		c.codeCSS =  _this.codeCSS;
+		c.layout = e.target.value; 	
+		_this.updateProps(c)		
+		_this.init();					
+		_this.updateIframe()	
+	})			
 	_this.updateIframe()
 }
-/**
- * Render modo visual en paneles
- */
-Codia.prototype.renderPanel = function() {
+	
+Editor.prototype.renderPanel = function() {
 	let template = `			
 		<div id="viz_${this.id}" class="container-codicis d-flex flex-column bg-dark">
 			<nav class="navbar navbar-expand-lg navbar-dark bg-black align-items-stretch py-1">
-				<div class="container-fluid px-1">
+				<div class="container-fluid px-3">
 					<div class="d-flex justify-content-between w-100">
 						<div class="ms-2">
-							<a class="navbar-brand text-white fs-5 cal-sans-font" href="#"><img src="${this.logo}" />${this.CONSTANTES.nameApp}</a>
+							<a class="navbar-brand text-white fs-4" href="#">${this.CONSTANTES.nameApp}</a>
 						</div>
-						<div class="ms-2 pt-1">
-							${this.tplSelectorLayout()}
+						<div class="ms-2">
+							<div class="d-flex align-items-baseline">
+								<div class="d-flex px-2">
+									<div class="w-100">
+										<select id="selectLayout_${this.id}" class="form-select form-select-sm text-muted">
+											<option value="panel">Panel</option>
+											<option value="tabs">Tabs</option>
+										</select>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -161,7 +156,7 @@ Codia.prototype.renderPanel = function() {
 				</div>
 				<!-- div class="gutter-col gutter-col-1 " id="gutter-col-1-${this.id}"></ !-->
 				<div class="text-dark " id="two_${this.id}">
-					<iframe id="_preview_${this.id}_" frameborder="0" allowfullscreen sandbox class="iPreview bg-light h-100 w-100"></iframe>
+					<iframe id="_preview_${this.id}_" frameborder="0" class="iPreview bg-light h-100 w-100"></iframe>
 				</div>
 			</div>
 		</div>	
@@ -169,38 +164,26 @@ Codia.prototype.renderPanel = function() {
 	this.eleRender.innerHTML = template;
 		// this.afterRender()
 }
-Codia.prototype.tplSelectorLayout = function(){
-	return "";
-	// return `<div class="d-flex align-items-baseline">
-	// 		<div class="d-flex px-2">
-	// 			<div class="w-100">
-	// 				<select id="selectLayout_${this.id}" class="form-select form-select-sm text-muted">
-	// 					<option value="panel">Panel</option>
-	// 					<option value="tabs">Tabs</option>
-	// 				</select>
-	// 			</div>
-	// 		</div>
-	// 	</div>`;
-}
-/**
- * Renderiza el modo visual en tabs
- */
-Codia.prototype.renderTabs = function() {
-	let tHtml = "", tCss = "", tJs = "";
-	if(this.vActive === "html") tHtml = "active"
-	else if(this.vActive === "js") tJs = "active" 
-	else if(this.vActive == "css") tCss = "active"	
-	// template
+Editor.prototype.renderTabs = function() {
 	let template = `				
 		<div id="viz_${this.id}" class="container-codicis d-flex flex-column bg-dark">
 			<nav class="navbar navbar-expand-lg navbar-dark bg-black align-items-stretch py-1">
-				<div class="container-fluid px-1">
+				<div class="container-fluid px-3">
 					<div class="d-flex justify-content-between w-100">
 						<div class="ms-2">
-							<a class="navbar-brand text-white fs-5 cal-sans-font" href="#"><img src="${this.logo}" />${this.CONSTANTES.nameApp}</a>
+							<a class="navbar-brand text-white fs-4" href="#">${this.CONSTANTES.nameApp}</a>
 						</div>
-						<div class="ms-2 pt-1">
-							${this.tplSelectorLayout()}
+						<div class="ms-2">
+							<div class="d-flex align-items-baseline">
+								<div class="d-flex px-2">
+									<div class="w-100">
+										<select id="selectLayout_${this.id}" class="form-select form-select-sm text-muted">
+											<option value="panel">Panel</option>
+											<option value="tabs">Tabs</option>
+										</select>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -209,23 +192,23 @@ Codia.prototype.renderTabs = function() {
 				<div id="one_${this.id}" class="flex-grow-1 d-flex flex-column">
 					<ul id="tabbutton_${this.id}" class="nav nav-tabs" role="tablist">
 						<li class="nav-item">
-							<a id="tab1" class="nav-link ${tHtml}" data-bs-toggle="tab" href="#_html_${this.id}_">HTML</a>
+							<a id="tab1" class="nav-link active" data-bs-toggle="tab" href="#_html_${this.id}_">HTML</a>
 						</li>
 						<li class="nav-item">
-							<a id="tab2" class="nav-link ${tJs}" data-bs-toggle="tab" href="#_js_${this.id}_">JAVASCRIPT</a>
+							<a id="tab2" class="nav-link " data-bs-toggle="tab" href="#_js_${this.id}_">JAVASCRIPT</a>
 						</li>
 						<li class="nav-item">
-							<a id="tab3" class="nav-link ${tCss}" data-bs-toggle="tab" href="#_css_${this.id}_">CSS</a>
+							<a id="tab3" class="nav-link " data-bs-toggle="tab" href="#_css_${this.id}_">CSS</a>
 						</li>
 					</ul>
 					<div id="tabcontainer_${this.id}" class="tab-content h-100">
-						<div id="_html_${this.id}_" class="h-100 position-relative tab-pane ${tHtml}">
+						<div id="_html_${this.id}_" class="h-100 position-relative tab-pane active">
 							<i class="ihtml5 position-absolute"></i>
 						</div>
-						<div id="_js_${this.id}_" class="h-100 position-relative tab-pane ${tJs}">
+						<div id="_js_${this.id}_" class="h-100 position-relative tab-pane ">
 							<i class="ijs position-absolute"></i>
 						</div>
-						<div id="_css_${this.id}_" class="h-100 position-relative tab-pane ${tCss}">
+						<div id="_css_${this.id}_" class="h-100 position-relative tab-pane ">
 							<i class="icss position-absolute"></i>
 						</div>
 					</div>
@@ -241,35 +224,73 @@ Codia.prototype.renderTabs = function() {
 	// this.afterRender()		
 
 }
-/**
- * Agrega los eventos para:
- * actualizar el iframe en cada cambio de: html, css y js
- */	
-Codia.prototype.addEvents = function() {
+Editor.prototype.tabs = function() {
+	// let aTabs = document.querySelectorAll("#tabbutton_"+this.id+" > div button");
+	// let aContainers = [...this.get("tabcontainer_"+this.id).children];
+	// console.log(aTabs)
+	
+
+	// const triggerTabList = document.querySelectorAll('#myTab button')
+	// aTabs.forEach(triggerEl => {
+	// 	const tabTrigger = new bootstrap.Tab(triggerEl)
+
+	// 	triggerEl.addEventListener('click', event => {
+	// 	console.log(tabTrigger)
+	// 		event.preventDefault()
+	// 		tabTrigger.show()
+	// 	})
+	// })
+	// aTabs.forEach((t, index) => {			
+	// 	t.addEventListener("click" , function(e) {
+	// 		// reset
+	// 		console.log(aContainers)
+	// 		aTabs.forEach(function(t, idx){ 
+	// 			aTabs[idx].classList.remove("active"); 
+	// 			aTabs[idx].classList.remove("border-b-2"); 
+	// 			aTabs[idx].classList.remove("border-blue-500"); 
+	// 			aContainers[idx].classList.add("hidden")
+	// 		})
+	// 		// active tab +  container
+	// 		this.classList.add("active");				
+	// 		this.classList.add("border-b-2");				
+	// 		this.classList.add("border-gray-400");				
+	// 		aContainers[index].classList.remove("hidden")
+	// 	})
+	// })	
+
+}	
+Editor.prototype.addEvents = function() {
 	// this.elePreview = this.get("_preview_")
 	let html = this.editorHTML
 	let js = this.editorJS		
 	let css = this.editorCSS
 	let _this = this;
 	
-	html.onDidChangeModelContent((e) => {
-		_this.updateIframe()
+	html.then((editor) => {
+		editor.onDidChangeModelContent((e) => {
+			_this.updateIframe()
+		})
 	})
-	css.onDidChangeModelContent((e) => {				
-		_this.updateIframe()
-	})
-	js.onDidChangeModelContent((e) => {			
-		_this.updateIframe()
+	css.then((editor) => {
+		editor.onDidChangeModelContent((e) => {				
+			_this.updateIframe()
+		}) 
+	}) 
+	js.then((editor) => {
+		editor.onDidChangeModelContent((e) => {			
+			_this.updateIframe()
+		})
 	})
 	_this.afterRender()	
 }
-/**
- * Arma y actualiza el iFrame 
- */
-Codia.prototype.updateIframe = function() {
-	let html = this.editorHTML.getValue()
-	let js = this.editorJS.getValue();
-	let css = this.editorCSS.getValue()
+Editor.prototype.updateIframe = async function() {
+	let html = null;
+	await this.editorHTML.then((editor) => { html = editor.getValue()});
+	let js = null;
+	await this.editorJS.then((editor) => {js = editor.getValue()});
+	let css = null;
+	await this.editorCSS.then((editor) => {css = editor.getValue()});
+	
 	this.codeHTML = html
 	this.codeCSS = css
 	this.codeJS = js		
@@ -295,5 +316,6 @@ Codia.prototype.updateIframe = function() {
 	`;		
 	this.elePreview.setAttribute("srcdoc", template)						
 }
-window.Codia = Codia;
+// export default Editor; 
+window.Editor = Editor;
 

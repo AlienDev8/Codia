@@ -8,7 +8,8 @@
 	"scripts": {
 		"dev": "vite",
 		"build": "node ./esbuild.config.js",
-		"vite-build": "vite build",
+		"xbuild": "node ./build.js",
+		"vitebuild": "vite build",
 		"preview": "vite preview"
 	},
 	"devDependencies": {
@@ -18,11 +19,14 @@
 		"bootstrap": "^5.3.6",
 		"esbuild": "^0.25.0",
 		"esbuild-plugin-inline-css": "^0.0.1",
+		"fs": "^0.0.1-security",
+		"fs-extra": "^11.3.0",
 		"monaco-editor": "^0.52.2",
 		"path": "^0.12.7",
 		"sass": "^1.86.3",
 		"split.js": "^1.6.5",
 		"terser": "^5.37.0",
+		"url": "^0.11.4",
 		"vite": "^5.2.0"
 	}
 }
