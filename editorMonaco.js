@@ -30,7 +30,7 @@ export default function setupEditor(container, language, code) {
 			},
 			tabSize:3,
 			quickSuggestionsDelay:0,
-			wordWrap:"on", // off = with scroll, on = with out scroll 
+			wordWrap:"false", // off = with scroll, on = with out scroll 
 			cursorStyle:"line",	
 		});
 
