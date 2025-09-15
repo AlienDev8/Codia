@@ -1,11 +1,11 @@
 import Split from "split.js";
-import * as bootstrap from "bootstrap";
+import { Tab } from "bootstrap";
 import './styles.css';
 import setupEditor from './editorMonaco';
 /**
- * Codia: funcion principal generadora de la instancia de un editor para HTML, JS y CSS
- * @param {*} oConfig 
- */
+* Codia: funcion principal generadora de la instancia de un editor para HTML, JS y CSS
+* @param {*} oConfig 
+*/
 const Codia = function(oConfig){
 	this.iSplit = null;
 	this.vActive = "html"; // html, css, js
@@ -13,7 +13,8 @@ const Codia = function(oConfig){
 	this.editorHTML = null;
 	this.editorJS = null;
 	this.editorCSS = null;
-	this.logo = "./Codia_logo.svg";
+	// this.timeoutId = null;
+	// this.logo = "images/codia.svg";
 	this.CONSTANTES = {
 		PANEL:"panel",
 		TABS:"tabs",
@@ -45,7 +46,7 @@ const Codia = function(oConfig){
 	this.eleCSS = null;
 	this.eleJS = null;
 	this.EDITOR = null;
-
+	
 	this.updateProps(oConfig)
 }
 Codia.prototype.updateProps = function(props){
@@ -63,16 +64,16 @@ Codia.prototype.get = function(id){
 	return document.querySelector("#"+id)
 }
 /**
- * Inicializa el componente con los parárametros de entrada
- */
+* Inicializa el componente con los parárametros de entrada
+*/
 Codia.prototype.init  = function(){
 	this.selectLayout()	
 	this.loadEditor();			
 	this.addEvents();		
 }
 /**
- * Genera una instancia para cada sección: HTML, JS, CSS y los carga
- */
+* Genera una instancia para cada sección: HTML, JS, CSS y los carga
+*/
 Codia.prototype.loadEditor =  function(){
 	this.elePreview = this.get("_preview_"+this.id+"_")
 	this.eleHTML = this.get("_html_"+this.id+"_")
@@ -84,8 +85,8 @@ Codia.prototype.loadEditor =  function(){
 	this.editorCSS = setupEditor(this.eleCSS, 'css', this.codeCSS);		
 }	
 /**
- * Selecciona el modo visual que se renderizara: tabs o paneles verticales
- */
+* Selecciona el modo visual que se renderizara: tabs o paneles verticales
+*/
 Codia.prototype.selectLayout =  function(){
 	let aSplitsHorizontal = ["#one_"+this.id, "#two_"+this.id];
 	if(this.layout === this.CONSTANTES.TABS || this.layout === undefined){
@@ -108,15 +109,15 @@ Codia.prototype.selectLayout =  function(){
 	}		
 }
 /**
- * Despues de cargado el componente ejecuta esta funcion para poder actualizar el iframe con el contenido que pueda tener de inicio
- */
+* Despues de cargado el componente ejecuta esta funcion para poder actualizar el iframe con el contenido que pueda tener de inicio
+*/
 Codia.prototype.afterRender = function(){ // funcion comentada por el momento
 	let _this = this;
 	// let selectLayoutCbx = document.getElementById("selectLayout_"+_this.id);		
 	// selectLayoutCbx.value = _this.layout;
-
+	
 	// selectLayoutCbx.addEventListener("change", (e) => {			
-	// 	let c = _this.config;
+		// 	let c = _this.config;
 	// 	selectLayoutCbx.value = e.target.value;
 	// 	c.codeCSS =  _this.codeCSS;
 	// 	c.layout = e.target.value; 	
@@ -126,9 +127,16 @@ Codia.prototype.afterRender = function(){ // funcion comentada por el momento
 	// })			
 	_this.updateIframe()
 }
+Codia.prototype.linkGithub = () => {
+	return `
+		<a href="https://github.com/AlienDev8/Codia.git" target="_blank">
+			<i class="igithub"></i>
+		</a>
+	`;
+}
 /**
- * Render modo visual en paneles
- */
+* Render modo visual en paneles
+*/
 Codia.prototype.renderPanel = function() {
 	let template = `			
 		<div id="viz_${this.id}" class="container-codicis d-flex flex-column bg-dark">
@@ -136,10 +144,13 @@ Codia.prototype.renderPanel = function() {
 				<div class="container-fluid px-1">
 					<div class="d-flex justify-content-between w-100">
 						<div class="ms-2">
-							<a class="navbar-brand text-white fs-5 cal-sans-font" href="#"><img src="${this.logo}" />${this.CONSTANTES.nameApp}</a>
+							<a class="navbar-brand text-white fs-5 cal-sans-font" href="#">								
+								<img src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8IS0tIENyZWF0b3I6IENvcmVsRFJBVyAoRXZhbHVhdGlvbiBWZXJzaW9uKSAtLT4NCjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWw6c3BhY2U9InByZXNlcnZlIiB3aWR0aD0iOC40NjY2bW0iIGhlaWdodD0iOC40NjY2bW0iIHZlcnNpb249IjEuMSIgc3R5bGU9InNoYXBlLXJlbmRlcmluZzpnZW9tZXRyaWNQcmVjaXNpb247IHRleHQtcmVuZGVyaW5nOmdlb21ldHJpY1ByZWNpc2lvbjsgaW1hZ2UtcmVuZGVyaW5nOm9wdGltaXplUXVhbGl0eTsgZmlsbC1ydWxlOmV2ZW5vZGQ7IGNsaXAtcnVsZTpldmVub2RkIg0Kdmlld0JveD0iMCAwIDg0Ni42NiA4NDYuNjYiDQogeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiDQogeG1sbnM6eG9kbT0iaHR0cDovL3d3dy5jb3JlbC5jb20vY29yZWxkcmF3L29kbS8yMDAzIj4NCiA8ZGVmcz4NCiAgPHN0eWxlIHR5cGU9InRleHQvY3NzIj4NCiAgIDwhW0NEQVRBWw0KICAgIC5zdHIwIHtzdHJva2U6I0Q2QjQzMjtzdHJva2Utd2lkdGg6MjA7c3Ryb2tlLW1pdGVybGltaXQ6MjIuOTI1Nn0NCiAgICAuZmlsMCB7ZmlsbDojRDZCNDMyfQ0KICAgXV0+DQogIDwvc3R5bGU+DQogPC9kZWZzPg0KIDxnIGlkPSJMYXllcl94MDAyMF8xIj4NCiAgPG1ldGFkYXRhIGlkPSJDb3JlbENvcnBJRF8wQ29yZWwtTGF5ZXIiLz4NCiAgPHBhdGggY2xhc3M9ImZpbDAgc3RyMCIgZD0iTTQxMS4xIDk4Ljk2YzE0OC42NiwwIDI2OS4xOCwxMjAuNTIgMjY5LjE4LDI2OS4xOCAwLDQ5LjIxIC0xMy4yLDk1LjMyIC0zNi4yNSwxMzUuMDFsNC4wNCAtOC40NyAtNy45NyAxNS4wMmMtOS44OCwxNS45NSAtMjEuMzgsMzAuNzkgLTM0LjI4LDQ0LjNsLTE4NS41MiAyMDAuNjYgMCAtMTE5LjY0IDEzMC42NCAtMTM4LjY1IDE3LjU4IC0yMi43MmMxOS43NCwtMjkuOTQgMzEuMjQsLTY1LjgxIDMxLjI0LC0xMDQuMzYgMCwtMTA0LjgzIC04NC45OCwtMTg5LjgxIC0xODkuODEsLTE4OS44MSAtMTA0LjgzLDAgLTE4OS44MSw4NC45OCAtMTg5LjgxLDE4OS44MSAwLDEwNC40NSA4NC4zNiwxODkuMTkgMTg4LjY2LDE4OS44MWwwIDc4LjIxYy0xNDcuNiwtMS4yMyAtMjY2Ljg4LC0xMjEuMjcgLTI2Ni44OCwtMjY5LjE3IDAsLTE0OC42NiAxMjAuNTIsLTI2OS4xOCAyNjkuMTgsLTI2OS4xOHoiLz4NCiA8L2c+DQo8L3N2Zz4NCg=='/>${this.CONSTANTES.nameApp}
+							</a>
 						</div>
 						<div class="ms-2 pt-1">
 							${this.tplSelectorLayout()}
+							${this.linkGithub()}
 						</div>
 					</div>
 				</div>
@@ -167,7 +178,7 @@ Codia.prototype.renderPanel = function() {
 		</div>	
 	`;
 	this.eleRender.innerHTML = template;
-		// this.afterRender()
+	// this.afterRender()
 }
 Codia.prototype.tplSelectorLayout = function(){
 	return "";
@@ -183,8 +194,8 @@ Codia.prototype.tplSelectorLayout = function(){
 	// 	</div>`;
 }
 /**
- * Renderiza el modo visual en tabs
- */
+* Renderiza el modo visual en tabs
+*/
 Codia.prototype.renderTabs = function() {
 	let tHtml = "", tCss = "", tJs = "";
 	if(this.vActive === "html") tHtml = "active"
@@ -197,10 +208,13 @@ Codia.prototype.renderTabs = function() {
 				<div class="container-fluid px-1">
 					<div class="d-flex justify-content-between w-100">
 						<div class="ms-2">
-							<a class="navbar-brand text-white fs-5 cal-sans-font" href="#"><img src="${this.logo}" />${this.CONSTANTES.nameApp}</a>
+							<a class="navbar-brand text-white fs-5 cal-sans-font" href="#">								
+								<img src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8IS0tIENyZWF0b3I6IENvcmVsRFJBVyAoRXZhbHVhdGlvbiBWZXJzaW9uKSAtLT4NCjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWw6c3BhY2U9InByZXNlcnZlIiB3aWR0aD0iOC40NjY2bW0iIGhlaWdodD0iOC40NjY2bW0iIHZlcnNpb249IjEuMSIgc3R5bGU9InNoYXBlLXJlbmRlcmluZzpnZW9tZXRyaWNQcmVjaXNpb247IHRleHQtcmVuZGVyaW5nOmdlb21ldHJpY1ByZWNpc2lvbjsgaW1hZ2UtcmVuZGVyaW5nOm9wdGltaXplUXVhbGl0eTsgZmlsbC1ydWxlOmV2ZW5vZGQ7IGNsaXAtcnVsZTpldmVub2RkIg0Kdmlld0JveD0iMCAwIDg0Ni42NiA4NDYuNjYiDQogeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiDQogeG1sbnM6eG9kbT0iaHR0cDovL3d3dy5jb3JlbC5jb20vY29yZWxkcmF3L29kbS8yMDAzIj4NCiA8ZGVmcz4NCiAgPHN0eWxlIHR5cGU9InRleHQvY3NzIj4NCiAgIDwhW0NEQVRBWw0KICAgIC5zdHIwIHtzdHJva2U6I0Q2QjQzMjtzdHJva2Utd2lkdGg6MjA7c3Ryb2tlLW1pdGVybGltaXQ6MjIuOTI1Nn0NCiAgICAuZmlsMCB7ZmlsbDojRDZCNDMyfQ0KICAgXV0+DQogIDwvc3R5bGU+DQogPC9kZWZzPg0KIDxnIGlkPSJMYXllcl94MDAyMF8xIj4NCiAgPG1ldGFkYXRhIGlkPSJDb3JlbENvcnBJRF8wQ29yZWwtTGF5ZXIiLz4NCiAgPHBhdGggY2xhc3M9ImZpbDAgc3RyMCIgZD0iTTQxMS4xIDk4Ljk2YzE0OC42NiwwIDI2OS4xOCwxMjAuNTIgMjY5LjE4LDI2OS4xOCAwLDQ5LjIxIC0xMy4yLDk1LjMyIC0zNi4yNSwxMzUuMDFsNC4wNCAtOC40NyAtNy45NyAxNS4wMmMtOS44OCwxNS45NSAtMjEuMzgsMzAuNzkgLTM0LjI4LDQ0LjNsLTE4NS41MiAyMDAuNjYgMCAtMTE5LjY0IDEzMC42NCAtMTM4LjY1IDE3LjU4IC0yMi43MmMxOS43NCwtMjkuOTQgMzEuMjQsLTY1LjgxIDMxLjI0LC0xMDQuMzYgMCwtMTA0LjgzIC04NC45OCwtMTg5LjgxIC0xODkuODEsLTE4OS44MSAtMTA0LjgzLDAgLTE4OS44MSw4NC45OCAtMTg5LjgxLDE4OS44MSAwLDEwNC40NSA4NC4zNiwxODkuMTkgMTg4LjY2LDE4OS44MWwwIDc4LjIxYy0xNDcuNiwtMS4yMyAtMjY2Ljg4LC0xMjEuMjcgLTI2Ni44OCwtMjY5LjE3IDAsLTE0OC42NiAxMjAuNTIsLTI2OS4xOCAyNjkuMTgsLTI2OS4xOHoiLz4NCiA8L2c+DQo8L3N2Zz4NCg=='/>${this.CONSTANTES.nameApp}
+							</a>
 						</div>
 						<div class="ms-2 pt-1">
 							${this.tplSelectorLayout()}
+							${this.linkGithub()}
 						</div>
 					</div>
 				</div>
@@ -239,12 +253,12 @@ Codia.prototype.renderTabs = function() {
 	`;
 	this.eleRender.innerHTML = template;
 	// this.afterRender()		
-
+	
 }
 /**
- * Agrega los eventos para:
- * actualizar el iframe en cada cambio de: html, css y js
- */	
+* Agrega los eventos para:
+* actualizar el iframe en cada cambio de: html, css y js
+*/	
 Codia.prototype.addEvents = function() {
 	// this.elePreview = this.get("_preview_")
 	let html = this.editorHTML
@@ -264,8 +278,8 @@ Codia.prototype.addEvents = function() {
 	_this.afterRender()	
 }
 /**
- * Arma y actualiza el iFrame 
- */
+* Arma y actualiza el iFrame 
+*/
 Codia.prototype.updateIframe = function() {
 	let html = this.editorHTML.getValue()
 	let js = this.editorJS.getValue();
@@ -273,7 +287,7 @@ Codia.prototype.updateIframe = function() {
 	this.codeHTML = html
 	this.codeCSS = css
 	this.codeJS = js		
-
+	
 	const template = `
 		<!DOCTYPE html>
 		<html lang="es">
@@ -293,7 +307,18 @@ Codia.prototype.updateIframe = function() {
 			</body>
 		</html>
 	`;		
-	this.elePreview.setAttribute("srcdoc", template)						
+	// this.elePreview.setAttribute("srcdoc", template)
+	this.updateIframeDebounced(this.elePreview, template)
+	// this.elePreview.src = 'data:text/html;charset=utf-8,' + encodeURIComponent(template);		
+}
+
+Codia.prototype.updateIframeDebounced = (elePreview, html) => {
+	let _this = this;
+	let timeoutId;  
+	clearTimeout(timeoutId);
+	timeoutId = setTimeout(() => {
+		elePreview.srcdoc = html;
+	}, 300); // Espera 300ms sin cambios
 }
 window.Codia = Codia;
 

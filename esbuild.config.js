@@ -26,7 +26,7 @@ esbuild.build({
 	},
 	resolveExtensions:[".json", ".js", ".css",".svg"],
 	inject:['./monaco-setup.js'],
-	external: ['node_modules/monaco-editor/','/images/*'], // No empaquetar estas dependencias
+	external: ['node_modules/*','images/*'], // No empaquetar estas dependencias
 	plugins:[
 		{
 			name: 'copy-monaco-full',
@@ -38,6 +38,41 @@ esbuild.build({
 					
 					if (fs.existsSync(sourceDir)) {
 						copyDirRecursive(sourceDir, destDir);
+					}
+				});
+			}
+		},
+		{
+			name: 'copy-svg',
+			setup(build) {
+				build.onEnd(async (result) => {
+					if (result.errors.length > 0) return;
+
+					const sources = [
+						// 'public/*.svg',
+						'public/images/codia.svg'
+					];
+
+					const destDir = 'dist/images';
+
+					// Crear directorio de destino si no existe
+					if (!fs.existsSync(destDir)) {
+						fs.mkdirSync(destDir, { recursive: true });
+					}
+
+					for (const pattern of sources) {
+						const globPath = path.resolve(pattern);
+						const dir = path.dirname(globPath);
+						const files = fs.readdirSync(dir).filter(file => 
+							path.extname(file).toLowerCase() === '.svg'
+						);
+
+						for (const file of files) {
+							const src = path.join(dir, file);
+							const dest = path.join(destDir, path.basename(src));
+							fs.copyFileSync(src, dest);
+							console.log(`✅ Copiado: ${src} → ${dest}`);
+						}
 					}
 				});
 			}
@@ -62,7 +97,7 @@ function copyDirRecursive(src, dest) {
       copyDirRecursive(srcPath, destPath);
     } else {
       // Copiar archivos relevantes
-      if (/\.(js|ts|json|css|ttf|woff|woff2)$/.test(entry.name)) {
+      if(/\.(js|ts|json|css|ttf|woff|woff2|svg)$/.test(entry.name)) {
         fs.copyFileSync(srcPath, destPath);
       }
     }

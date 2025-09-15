@@ -22,18 +22,18 @@
 // 	},
 // };
 
-const Workers = {
-  getWorkerUrl: function (moduleId, label) {
-    const path = {
-      'editor': 'editor/editor.worker.js',
-      'json': 'json/json.worker.js',
-      'css': 'css/css.worker.js',
-      'html': 'html/html.worker.js',
-      'typescript': 'typescript/ts.worker.js',
-      'javascript': 'typescript/ts.worker.js',
-    };
-    return `./assets/vs/${path[label] || 'editor/editor.worker.js'}`;
-  }
-};
+// const Workers = {
+//   getWorkerUrl: function (moduleId, label) {
+//     const path = {
+//       'editor': 'editor/editor.worker.js',
+//       'json': 'json/json.worker.js',
+//       'css': 'css/css.worker.js',
+//       'html': 'html/html.worker.js',
+//       'typescript': 'typescript/ts.worker.js',
+//       'javascript': 'typescript/ts.worker.js',
+//     };
+//     return `./assets/vs/${path[label] || 'editor/editor.worker.js'}`;
+//   }
+// };
 
-export default Workers;
+// export default Workers;
