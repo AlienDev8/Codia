@@ -10,6 +10,7 @@ const Codia = function(oConfig){
 	this.iSplit = null;
 	this.vActive = "html"; // html, css, js
 	this.activo = null;
+	this.repo = true; // por defecto muestra el enlace al repositorio del proyecto
 	this.editorHTML = null;
 	this.editorJS = null;
 	this.editorCSS = null;
@@ -53,6 +54,7 @@ Codia.prototype.updateProps = function(props){
 	this.config = props;
 	this.id = props.render
 	this.layout = props.layout;
+	this.repo = props.repo !== undefined ? props.repo : this.repo; 
 	this.vActive = props.activo !== null ? props.activo.trim() : this.vActive;
 	this.eleRender = document.getElementById(props.render);	
 	this.eleRender.classList.add("parent-codicis")
@@ -127,12 +129,16 @@ Codia.prototype.afterRender = function(){ // funcion comentada por el momento
 	// })			
 	_this.updateIframe()
 }
-Codia.prototype.linkGithub = () => {
-	return `
-		<a href="https://github.com/AlienDev8/Codia.git" target="_blank" class="pr-1">
-			<i class="igithub"></i>
-		</a>
-	`;
+Codia.prototype.linkGithub = function() {
+	if(this.repo){
+		return `
+			<a href="https://github.com/AlienDev8/Codia.git" target="_blank" class="pr-1">
+				<i class="igithub"></i>
+			</a>
+		`;
+	} else {
+		return "";
+	}
 }
 /**
 * Render modo visual en paneles
@@ -172,7 +178,7 @@ Codia.prototype.renderPanel = function() {
 				</div>
 				<!-- div class="gutter-col gutter-col-1 " id="gutter-col-1-${this.id}"></ !-->
 				<div class="text-dark " id="two_${this.id}">
-					<iframe id="_preview_${this.id}_" frameborder="0" allowfullscreen sandbox class="iPreview bg-light h-100 w-100"></iframe>
+					<iframe id="_preview_${this.id}_" frameborder="0" class="iPreview bg-light h-100 w-100"></iframe>
 				</div>
 			</div>
 		</div>	
@@ -221,26 +227,38 @@ Codia.prototype.renderTabs = function() {
 			</nav>
 			<div class="d-flex h-100 grid">
 				<div id="one_${this.id}" class="flex-grow-1 d-flex flex-column">
-					<ul id="tabbutton_${this.id}" class="nav nav-tabs" role="tablist">
+					<ul id="tabbutton_${this.id}" class="nav nav-tabs position-relative" role="tablist">
 						<li class="nav-item">
-							<a id="tab1" class="nav-link ${tHtml}" data-bs-toggle="tab" href="#_html_${this.id}_">HTML</a>
+							<a id="tab1" class="nav-link ${tHtml}" data-bs-toggle="tab" href="#_html_${this.id}_">
+								<i class="tabhtml5 d-inline-block"></i>
+								<div class="d-inline-block align-bottom">HTML</div>
+							</a>
 						</li>
 						<li class="nav-item">
-							<a id="tab2" class="nav-link ${tJs}" data-bs-toggle="tab" href="#_js_${this.id}_">JAVASCRIPT</a>
+							<a id="tab2" class="nav-link ${tJs}" data-bs-toggle="tab" href="#_js_${this.id}_">
+								<i class="tabjs d-inline-block"></i>
+								<div class="d-inline-block align-bottom">JAVASCRIPT</div>
+							</a>
 						</li>
 						<li class="nav-item">
-							<a id="tab3" class="nav-link ${tCss}" data-bs-toggle="tab" href="#_css_${this.id}_">CSS</a>
+							<a id="tab3" class="nav-link ${tCss}" data-bs-toggle="tab" href="#_css_${this.id}_">
+								<i class="tabcss d-inline-block"></i>
+								<div class="d-inline-block align-bottom">CSS</div>
+							</a>
 						</li>
+						<div id="btn_play_${this.id}" class="btn btn-sm d-inline-block position-absolute end-0">
+							<i class="iplay d-inline-block"></i>
+						</div>
 					</ul>
 					<div id="tabcontainer_${this.id}" class="tab-content h-100">
 						<div id="_html_${this.id}_" class="h-100 position-relative tab-pane ${tHtml}">
-							<i class="ihtml5 position-absolute"></i>
+							<!--i class="ihtml5 position-absolute"></i-->
 						</div>
 						<div id="_js_${this.id}_" class="h-100 position-relative tab-pane ${tJs}">
-							<i class="ijs position-absolute"></i>
+							<!--i class="ijs position-absolute"></i-->
 						</div>
 						<div id="_css_${this.id}_" class="h-100 position-relative tab-pane ${tCss}">
-							<i class="icss position-absolute"></i>
+							<!--i class="icss position-absolute"></i-->
 						</div>
 					</div>
 				</div>
@@ -268,7 +286,7 @@ Codia.prototype.addEvents = function() {
 	
 	html.onDidChangeModelContent((e) => {
 		_this.updateIframe()
-	})
+	})	
 	css.onDidChangeModelContent((e) => {				
 		_this.updateIframe()
 	})

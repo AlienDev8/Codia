@@ -34,7 +34,7 @@ export default function setupEditor(container, language, code) {
 			cursorStyle:"line",	
 		});
 
-		instanceMonaco.getModel().updateOptions({ tabSize: 0 })
+		instanceMonaco.getModel().updateOptions({ tabSize: 0 })		
 
 		window.addEventListener('resize', () => {
 			instanceMonaco.layout({ height: "100vh" });
