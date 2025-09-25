@@ -10,6 +10,7 @@ const Codia = function(oConfig){
 	this.iSplit = null;
 	this.vActive = "html"; // html, css, js
 	this.activo = null;
+	this.autoplay = true; // por defecto es true y actualiza el iframe automaticamente / si false entonce habilita el boton de play y desactiva la actualizacion automatica
 	this.repo = true; // por defecto muestra el enlace al repositorio del proyecto
 	this.editorHTML = null;
 	this.editorJS = null;
@@ -55,6 +56,8 @@ Codia.prototype.updateProps = function(props){
 	this.id = props.render
 	this.layout = props.layout;
 	this.repo = props.repo !== undefined ? props.repo : this.repo; 
+	this.autoplay = props.autoplay !== undefined ? props.autoplay : this.autoplay;
+	console.log("autoplay:",this.autoplay) 
 	this.vActive = props.activo !== null ? props.activo.trim() : this.vActive;
 	this.eleRender = document.getElementById(props.render);	
 	this.eleRender.classList.add("parent-codicis")
@@ -127,7 +130,7 @@ Codia.prototype.afterRender = function(){ // funcion comentada por el momento
 	// 	_this.init();					
 	// 	_this.updateIframe()	
 	// })			
-	_this.updateIframe()
+	if(this.autoplay) _this.updateIframe()
 }
 Codia.prototype.linkGithub = function() {
 	if(this.repo){
@@ -139,6 +142,18 @@ Codia.prototype.linkGithub = function() {
 	} else {
 		return "";
 	}
+}
+Codia.prototype.showPlay = function() {
+	if(this.autoplay === false){
+		return `
+			<button id="btn_play_${this.id}" class="btn btn-sm btn-outline-dark d-inline-block position-absolute end-0">
+				<i class="iplay d-inline-block"></i>
+			</button>
+		`;
+	} else {
+		return "";
+	}
+		
 }
 /**
 * Render modo visual en paneles
@@ -246,9 +261,7 @@ Codia.prototype.renderTabs = function() {
 								<div class="d-inline-block align-bottom">CSS</div>
 							</a>
 						</li>
-						<div id="btn_play_${this.id}" class="btn btn-sm d-inline-block position-absolute end-0">
-							<i class="iplay d-inline-block"></i>
-						</div>
+						${this.showPlay()}
 					</ul>
 					<div id="tabcontainer_${this.id}" class="tab-content h-100">
 						<div id="_html_${this.id}_" class="h-100 position-relative tab-pane ${tHtml}">
@@ -283,15 +296,23 @@ Codia.prototype.addEvents = function() {
 	let js = this.editorJS		
 	let css = this.editorCSS
 	let _this = this;
+
+	let play = !this.autoplay ? this.get("btn_play_"+this.id) : null
+	if(play !== null){	
+		play.addEventListener("click", (e) => {
+			e.preventDefault();
+			_this.updateIframe()
+		})
+	}
 	
 	html.onDidChangeModelContent((e) => {
-		_this.updateIframe()
+		if(this.autoplay) _this.updateIframe()
 	})	
 	css.onDidChangeModelContent((e) => {				
-		_this.updateIframe()
+		if(this.autoplay) _this.updateIframe()
 	})
 	js.onDidChangeModelContent((e) => {			
-		_this.updateIframe()
+		if(this.autoplay) _this.updateIframe()
 	})
 	_this.afterRender()	
 }
