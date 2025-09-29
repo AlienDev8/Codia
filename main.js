@@ -1,5 +1,5 @@
 import Split from "split.js";
-import { Tab } from "bootstrap";
+import { Tab, Tooltip } from "bootstrap";
 import './styles.css';
 import setupEditor from './editorMonaco';
 /**
@@ -10,13 +10,12 @@ const Codia = function(oConfig){
 	this.iSplit = null;
 	this.vActive = "html"; // html, css, js
 	this.activo = null;
+	this.librerias = true; // por defecto muestra la pestaña de librerias por si el usuario necesita añadir alguna en especial
 	this.autoplay = true; // por defecto es true y actualiza el iframe automaticamente / si false entonce habilita el boton de play y desactiva la actualizacion automatica
 	this.repo = true; // por defecto muestra el enlace al repositorio del proyecto
 	this.editorHTML = null;
 	this.editorJS = null;
-	this.editorCSS = null;
-	// this.timeoutId = null;
-	// this.logo = "images/codia.svg";
+	this.editorCSS = null;	
 	this.CONSTANTES = {
 		PANEL:"panel",
 		TABS:"tabs",
@@ -42,7 +41,7 @@ const Codia = function(oConfig){
 		justify-content: center;
 		align-items: center;
 	}
-	`,	
+	`
 	this.elePreview = null;
 	this.eleHTML = null;
 	this.eleCSS = null;
@@ -57,7 +56,7 @@ Codia.prototype.updateProps = function(props){
 	this.layout = props.layout;
 	this.repo = props.repo !== undefined ? props.repo : this.repo; 
 	this.autoplay = props.autoplay !== undefined ? props.autoplay : this.autoplay;
-	console.log("autoplay:",this.autoplay) 
+	this.librerias = props.librerias !== undefined ? props.librerias : this.librerias;
 	this.vActive = props.activo !== null ? props.activo.trim() : this.vActive;
 	this.eleRender = document.getElementById(props.render);	
 	this.eleRender.classList.add("parent-codicis")
@@ -129,7 +128,11 @@ Codia.prototype.afterRender = function(){ // funcion comentada por el momento
 	// 	_this.updateProps(c)		
 	// 	_this.init();					
 	// 	_this.updateIframe()	
-	// })			
+	// })		
+	// inicializamos los tooltips para poder utilizarlos
+	const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="codia-tooltip"]')
+	const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new Tooltip(tooltipTriggerEl,{container: 'body',trigger: 'hover',boundary: 'window'}))
+		
 	if(this.autoplay) _this.updateIframe()
 }
 Codia.prototype.linkGithub = function() {
@@ -143,10 +146,37 @@ Codia.prototype.linkGithub = function() {
 		return "";
 	}
 }
+Codia.prototype.tabLibrerias = function(t){
+	if(this.librerias){
+		if(t === 1){
+			return `<li class="nav-item">
+				<a id="tab4" class="nav-link" data-bs-toggle="tab" href="#_librerias_${this.id}_">
+					<i class="tablibrary d-inline-block"></i>
+					<div class="d-inline-block align-bottom">Scripts</div>
+				</a>
+			</li>`;
+		} else {
+			return `<div id="_librerias_${this.id}_" class="h-100 position-relative tab-pane bg-light">
+				<div class="row-fluid p-2">
+					<div class="input-group input-group-sm mb-3">
+						<span class="input-group-text">URL</span>
+						<input id="btnAgregaLibreria_${this.id}" type="text" class="form-control" placeholder="libreria js / css y ↵" aria-label="URL">
+					</div>
+					<div class="">
+						<ul class="list-group" id="listaLibrerias_${this.id}">													
+						</ul>
+					</div>
+				</div>
+			</div>`;
+		}
+	} else {
+		return "";
+	}
+}
 Codia.prototype.showPlay = function() {
 	if(this.autoplay === false){
 		return `
-			<button id="btn_play_${this.id}" class="btn btn-sm btn-outline-dark d-inline-block position-absolute end-0">
+			<button id="btn_play_${this.id}" class="btn btn-sm btn-outline-dark d-inline-block position-absolute end-0 btn-play" data-bs-container="body" data-bs-toggle="codia-tooltip" data-bs-title="Actualizar vista previa" data-bs-placement="bottom">
 				<i class="iplay d-inline-block"></i>
 			</button>
 		`;
@@ -243,6 +273,7 @@ Codia.prototype.renderTabs = function() {
 			<div class="d-flex h-100 grid">
 				<div id="one_${this.id}" class="flex-grow-1 d-flex flex-column">
 					<ul id="tabbutton_${this.id}" class="nav nav-tabs position-relative" role="tablist">
+						${this.tabLibrerias(1)}
 						<li class="nav-item">
 							<a id="tab1" class="nav-link ${tHtml}" data-bs-toggle="tab" href="#_html_${this.id}_">
 								<i class="tabhtml5 d-inline-block"></i>
@@ -264,6 +295,7 @@ Codia.prototype.renderTabs = function() {
 						${this.showPlay()}
 					</ul>
 					<div id="tabcontainer_${this.id}" class="tab-content h-100">
+						${this.tabLibrerias(2)}
 						<div id="_html_${this.id}_" class="h-100 position-relative tab-pane ${tHtml}">
 							<!--i class="ihtml5 position-absolute"></i-->
 						</div>
@@ -297,6 +329,8 @@ Codia.prototype.addEvents = function() {
 	let css = this.editorCSS
 	let _this = this;
 
+	let agregaLibreria = this.get("btnAgregaLibreria_"+this.id);
+	let listaLibrerias = this.get("listaLibrerias_"+this.id);
 	let play = !this.autoplay ? this.get("btn_play_"+this.id) : null
 	if(play !== null){	
 		play.addEventListener("click", (e) => {
@@ -314,6 +348,23 @@ Codia.prototype.addEvents = function() {
 	js.onDidChangeModelContent((e) => {			
 		if(this.autoplay) _this.updateIframe()
 	})
+	agregaLibreria.addEventListener("keydown", function(event){
+		if(event.key === "Enter"){
+			event.preventDefault();
+			let url = this.value.trim();
+			if(url.length > 0){
+				listaLibrerias.appendChild(document.createRange().createContextualFragment(`
+					<li class="list-group-item">								
+						<div class="input-group input-group-sm p-1">									
+							<button type="button" class="btn-close d-inline-block" aria-label="Close"></button>
+							<span class="d-inline-block">${url}</span>
+						</div>
+					</li>	
+				`));
+			}
+		}
+	});
+	
 	_this.afterRender()	
 }
 /**
